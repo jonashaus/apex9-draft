@@ -3,13 +3,11 @@ import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
-import Toast from "../../../components/elements/Toast";
 import registerSVG from "../../../public/images/register.svg";
 
 const ChangePassword = () => {
   const supabase = useSupabaseClient();
   const router = useRouter();
-  const [toast, setToast] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordScore, setPasswordScore] = useState({
@@ -37,19 +35,12 @@ const ChangePassword = () => {
         password: password,
       });
       if (error) {
-        setToast({ colorScheme: "danger", text: error.message });
+        handleAddToast("danger", error.message);
       } else {
-        setToast({
-          colorScheme: "success",
-          text: "Your password was changed successfully.",
-        });
+        handleAddToast("success", "Your password was changed successfully");
       }
     }
     form.classList.add("was-validated");
-  };
-
-  const toastHandler = () => {
-    setToast(null);
   };
 
   const passwordInputHandler = async (event) => {
@@ -112,13 +103,6 @@ const ChangePassword = () => {
 
   return (
     <>
-      {toast && (
-        <Toast
-          colorScheme={toast.colorScheme}
-          text={toast.text}
-          onDismiss={toastHandler}
-        ></Toast>
-      )}
       <main
         className="container d-flex align-items-center justify-content-center"
         style={{ minHeight: "85vh" }}

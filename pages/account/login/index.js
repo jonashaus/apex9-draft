@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import Toast from "../../../components/elements/Toast";
 import loginSVG from "../../../public/images/login.svg";
+import { AppContext } from "../../../context/AppContextProvider";
 
 const Login = () => {
+  const { handleAddToast } = useContext(AppContext);
   const supabase = useSupabaseClient();
   const router = useRouter();
-  const [toast, setToast] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -25,30 +25,16 @@ const Login = () => {
         password: password,
       });
       if (error) {
-        setToast({ colorScheme: "danger", text: error.message });
+        handleAddToast("danger", error.message);
       } else {
-        setToast({
-          colorScheme: "success",
-          text: "Welcome back!",
-        });
+        handleAddToast("success", "Welcome back!");
       }
     }
     form.classList.add("was-validated");
   };
 
-  const toastHandler = () => {
-    setToast(null);
-  };
-
   return (
     <>
-      {toast && (
-        <Toast
-          colorScheme={toast.colorScheme}
-          text={toast.text}
-          onDismiss={toastHandler}
-        ></Toast>
-      )}
       <main
         className="container d-flex align-items-center justify-content-center"
         style={{ minHeight: "85vh" }}
@@ -132,5 +118,4 @@ const Login = () => {
     </>
   );
 };
-
 export default Login;

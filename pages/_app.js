@@ -3,6 +3,7 @@ import { useState } from "react";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import AppContextProvider from "../context/AppContextProvider";
+import NavBar from "../components/NavBar";
 import GenerateToasts from "../components/elements/GenerateToasts";
 
 function MyApp({ Component, pageProps }) {
@@ -14,6 +15,7 @@ function MyApp({ Component, pageProps }) {
       initialSession={pageProps.initialSession}
     >
       <AppContextProvider>
+        <NavBar />
         <Component {...pageProps} />
         <GenerateToasts />
       </AppContextProvider>

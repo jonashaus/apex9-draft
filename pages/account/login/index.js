@@ -1,14 +1,23 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../../../context/AppContextProvider";
 import CredentialForm from "../../../components/elements/CredentialForm";
 import CredentialsWrapper from "../../../components/elements/CredentialsWrapper";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import loginSVG from "../../../public/images/login.svg";
-import NavBar from "../../../components/NavBar";
+import { useRouter } from "next/router";
 
 const Login = () => {
   const { handleAddToast } = useContext(AppContext);
   const supabase = useSupabaseClient();
+  const router = useRouter();
+
+  const user = useUser();
+  useEffect(() => {
+    if (user) {
+      handleAddToast("success", "You're already logged in!");
+      router.push("/");
+    }
+  }, []);
 
   const submitHandler = async (email, password) => {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -19,12 +28,12 @@ const Login = () => {
       handleAddToast("danger", error.message);
     } else {
       handleAddToast("success", "Welcome back!");
+      router.push("/");
     }
   };
 
   return (
     <>
-      <NavBar></NavBar>
       <CredentialsWrapper title="Login" image={loginSVG}>
         <CredentialForm
           submitButtonText="Login"

@@ -4,7 +4,11 @@ const Home = () => {
   const session = useSession();
   const supabase = useSupabaseClient();
 
-  return <></>;
+  return (
+    <div className="container">
+      <h1>Home</h1>
+    </div>
+  );
 };
 
 export default Home;

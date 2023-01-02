@@ -1,15 +1,23 @@
-import '../styles/globals.css'
-import { useState } from 'react'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import "../styles/globals.css";
+import { useState } from "react";
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import AppContextProvider from "../context/AppContextProvider";
+import GenerateToasts from "../components/elements/GenerateToasts";
 
 function MyApp({ Component, pageProps }) {
-  const [supabase] = useState(() => createBrowserSupabaseClient())
+  const [supabase] = useState(() => createBrowserSupabaseClient());
 
   return (
-    <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
-      <Component {...pageProps} />
+    <SessionContextProvider
+      supabaseClient={supabase}
+      initialSession={pageProps.initialSession}
+    >
+      <AppContextProvider>
+        <Component {...pageProps} />
+        <GenerateToasts />
+      </AppContextProvider>
     </SessionContextProvider>
-  )
+  );
 }
-export default MyApp
+export default MyApp;

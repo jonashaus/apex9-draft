@@ -9,7 +9,8 @@ const CredentialForm = ({
   leftButtonText,
   leftButtonRoute,
   scorePassword,
-  emailReadOnly,
+  noEmail,
+  noPassword,
 }) => {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -26,7 +27,14 @@ const CredentialForm = ({
     : "justify-content-end";
 
   const submitMiddleWare = (event) => {
-    submitHandler(event, email, password);
+    event.preventDefault();
+
+    //Validate Form
+    const form = event.target;
+    if (form.checkValidity()) {
+      submitHandler(email, password);
+    }
+    form.classList.add("was-validated");
   };
 
   const passwordInputHandler = async (event) => {
@@ -89,55 +97,58 @@ const CredentialForm = ({
 
   return (
     <form className="needs-validation" onSubmit={submitMiddleWare} noValidate>
-      <div className="mb-3">
-        <label htmlFor="email" className="form-label">
-          Email
-        </label>
-        <input
-          type="email"
-          value={email || ""}
-          name="email"
-          onChange={(e) => setEmail(e.target.value)}
-          className="form-control"
-          aria-describedby="validationEmail"
-          required
-          disabled={emailReadOnly}
-        />
-        <div id="validationEmail" className="invalid-feedback">
-          Please enter your email address.
-        </div>
-      </div>
-      <div className="mb-3">
-        <label htmlFor="password" className="form-label">
-          Password{" "}
-          <i
-            className={
-              passwordVisible ? `bi bi-eye-fill` : `bi bi-eye-slash-fill`
-            }
-            id="pwVisToggle"
-            onClick={() => setPasswordVisible(!passwordVisible)}
-          ></i>
-        </label>
-        <input
-          type={passwordVisible ? "text" : "password"}
-          value={password || ""}
-          name="password"
-          className={`form-control ${scorePassword && passwordScore.classes}`}
-          aria-describedby="validationPassword"
-          onChange={(e) => setPassword(e.target.value)}
-          onInput={scorePassword && passwordInputHandler}
-          required
-        />
-
-        {scorePassword && (
-          <div id="passwordScore" className="form-text">
-            {passwordScore.text}
+      {!noEmail && (
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            value={email || ""}
+            onChange={(e) => setEmail(e.target.value)}
+            className="form-control"
+            aria-describedby="validationEmail"
+            required
+          />
+          <div id="validationEmail" className="invalid-feedback">
+            Please enter your email address.
           </div>
-        )}
-        <div id="validationPassword" className="invalid-feedback">
-          Please choose a password.
         </div>
-      </div>
+      )}
+
+      {!noPassword && (
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password{" "}
+            <i
+              className={
+                passwordVisible ? `bi bi-eye-fill` : `bi bi-eye-slash-fill`
+              }
+              id="pwVisToggle"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+            ></i>
+          </label>
+          <input
+            type={passwordVisible ? "text" : "password"}
+            value={password || ""}
+            className={`form-control ${scorePassword && passwordScore.classes}`}
+            aria-describedby="validationPassword"
+            onChange={(e) => setPassword(e.target.value)}
+            onInput={scorePassword && passwordInputHandler}
+            required
+          />
+
+          {scorePassword && (
+            <div id="passwordScore" className="form-text">
+              {passwordScore.text}
+            </div>
+          )}
+          <div id="validationPassword" className="invalid-feedback">
+            Please choose a password.
+          </div>
+        </div>
+      )}
+
       <div className="row">
         <div className={`col d-flex ${linkDivClasses}`}>
           {leftButtonRoute && (

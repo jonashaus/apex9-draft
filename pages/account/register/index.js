@@ -3,13 +3,11 @@ import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
-import Toast from "../../../components/elements/Toast";
 import registerSVG from "../../../public/images/register.svg";
 
 const Register = () => {
   const supabase = useSupabaseClient();
   const router = useRouter();
-  const [toast, setToast] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordScore, setPasswordScore] = useState({
@@ -31,12 +29,12 @@ const Register = () => {
         password: password,
       });
       if (error) {
-        setToast({ colorScheme: "danger", text: error.message });
+        handleAddToast("danger", error.message);
       } else {
-        setToast({
-          colorScheme: "success",
-          text: "Check your email for the confirmation link.",
-        });
+        handleAddToast(
+          "success",
+          "Check your email for the confirmation link."
+        );
       }
     }
     form.classList.add("was-validated");
@@ -106,13 +104,6 @@ const Register = () => {
 
   return (
     <>
-      {toast && (
-        <Toast
-          colorScheme={toast.colorScheme}
-          text={toast.text}
-          onDismiss={toastHandler}
-        ></Toast>
-      )}
       <main
         className="container d-flex align-items-center justify-content-center"
         style={{ minHeight: "85vh" }}

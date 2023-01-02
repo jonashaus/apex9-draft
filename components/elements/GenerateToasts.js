@@ -44,16 +44,15 @@ const Toast = ({ colorScheme, text, onDismiss, toastIndex }) => {
 
 const GenerateToasts = () => {
   const { toasts, handleRemoveToast } = useContext(AppContext);
-
   return (
     <div className="toast-container position-fixed bottom-0 end-0 p-3">
-      {toasts.map((toast, i) => (
+      {toasts.map((toast) => (
         <Toast
-          key={`toast_${i}`}
-          toastIndex={i}
-          colorScheme={toast.color}
+          key={toast.id}
+          id={toast.id}
+          colorScheme={toast.colorScheme}
           text={toast.text}
-          onDismiss={() => handleRemoveToast(i)}
+          onDismiss={() => handleRemoveToast(toast.id)}
         />
       ))}
     </div>

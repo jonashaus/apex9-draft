@@ -2,12 +2,10 @@ import { useState } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import Toast from "../../../components/elements/Toast";
 import loginSVG from "../../../public/images/login.svg";
 
 const ForgotPassword = () => {
   const supabase = useSupabaseClient();
-  const [toast, setToast] = useState(null);
   const [email, setEmail] = useState("");
 
   const submitHandler = async (event) => {
@@ -21,30 +19,18 @@ const ForgotPassword = () => {
         redirectTo: "https://www.youtube.com/watch?v=0Fs96oZ4se0&t=1229s",
       });
       if (error) {
-        setToast({ colorScheme: "danger", text: error.message });
+        handleAddToast("danger", error.message);
       } else {
-        setToast({
-          colorScheme: "success",
-          text: "Check your email for the password reset instructions.",
-        });
+        handleAddToast(
+          "success",
+          "Check your email for the password reset instructions."
+        );
       }
     }
     form.classList.add("was-validated");
   };
-
-  const toastHandler = () => {
-    setToast(null);
-  };
-
   return (
     <>
-      {toast && (
-        <Toast
-          colorScheme={toast.colorScheme}
-          text={toast.text}
-          onDismiss={toastHandler}
-        ></Toast>
-      )}
       <main
         className="container d-flex align-items-center justify-content-center"
         style={{ minHeight: "85vh" }}

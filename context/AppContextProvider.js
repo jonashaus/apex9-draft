@@ -6,16 +6,11 @@ export const AppContext = createContext({
   handleRemoveToast: () => {},
 });
 
-export const toastTypes = {
-  success: (text) => ({ color: "success", text }),
-  error: (text) => ({ color: "danger", text }),
-};
-
 export default function AppContextProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
-  const handleAddToast = (newToast) => {
-    const updatedToasts = [...toasts, newToast];
+  const handleAddToast = (colorScheme, text) => {
+    const updatedToasts = [...toasts, { colorScheme, text, id: Math.random() }];
     setToasts(updatedToasts);
   };
 

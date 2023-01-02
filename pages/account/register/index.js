@@ -40,10 +40,6 @@ const Register = () => {
     form.classList.add("was-validated");
   };
 
-  const toastHandler = () => {
-    setToast(null);
-  };
-
   const passwordInputHandler = async (event) => {
     let score = calculatePWscore(event.target.value);
     let scoreValue = { score: 0, classes: "form-control", text: " " };

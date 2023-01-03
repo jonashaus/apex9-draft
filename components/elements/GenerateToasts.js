@@ -1,12 +1,12 @@
 import { useContext, useEffect } from "react";
 import { AppContext } from "../../context/AppContextProvider";
 
-const Toast = ({ colorScheme, text, onDismiss, toastIndex }) => {
+const Toast = ({ colorScheme, text, onDismiss, id }) => {
   const { handleRemoveToast } = useContext(AppContext);
 
   const handleAutoClose = () => {
     const timer = setTimeout(() => {
-      handleRemoveToast(toastIndex);
+      handleRemoveToast(id);
     }, 3000);
 
     return timer;
@@ -30,7 +30,10 @@ const Toast = ({ colorScheme, text, onDismiss, toastIndex }) => {
       aria-atomic="true"
     >
       <div className="d-flex">
-        <div className="toast-body">{text}</div>
+        <div className="toast-body">
+          {text}
+          <p>{id}</p>
+        </div>
         <button
           type="button"
           className="btn-close btn-close-white me-2 m-auto"

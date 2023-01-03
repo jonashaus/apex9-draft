@@ -14,9 +14,9 @@ export default function AppContextProvider({ children }) {
     setToasts(updatedToasts);
   };
 
-  const handleRemoveToast = (toastIndex) => {
+  const handleRemoveToast = (id) => {
     const updatedToasts = [...toasts];
-    updatedToasts.splice(toastIndex, 1);
+    updatedToasts.splice(id, 1);
     setToasts(updatedToasts);
   };
 

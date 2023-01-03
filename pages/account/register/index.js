@@ -9,7 +9,18 @@ import { useRouter } from "next/router";
 const Register = () => {
   const { handleAddToast } = useContext(AppContext);
   const supabase = useSupabaseClient();
+
   const router = useRouter();
+  const user = useUser();
+  useEffect(() => {
+    if (user) {
+      handleAddToast(
+        "success",
+        "You're already logged in, no need to register again!"
+      );
+      router.push("/");
+    }
+  }, []);
 
   const submitHandler = async (email, password) => {
     const { data, error } = await supabase.auth.signUp({

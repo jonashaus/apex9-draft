@@ -9,8 +9,8 @@ import { useRouter } from "next/router";
 const Login = () => {
   const { handleAddToast } = useContext(AppContext);
   const supabase = useSupabaseClient();
-  const router = useRouter();
 
+  const router = useRouter();
   const user = useUser();
   useEffect(() => {
     if (user) {

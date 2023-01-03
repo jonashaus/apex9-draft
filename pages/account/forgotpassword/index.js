@@ -1,13 +1,26 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../../../context/AppContextProvider";
 import CredentialForm from "../../../components/elements/CredentialForm";
 import CredentialsWrapper from "../../../components/elements/CredentialsWrapper";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import forgotpasswordSVG from "../../../public/images/forgot_password.svg";
+import { useRouter } from "next/router";
 
 const ForgotPassword = () => {
   const { handleAddToast } = useContext(AppContext);
   const supabase = useSupabaseClient();
+
+  const router = useRouter();
+  const user = useUser();
+  useEffect(() => {
+    if (user) {
+      handleAddToast(
+        "warning",
+        "Please log out before requesting a new password!"
+      );
+      router.push("/");
+    }
+  }, []);
 
   const submitHandler = async (email, password) => {
     const { data, error } = await supabase.auth.resetPasswordForEmail(email);

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 export const AppContext = createContext({
   toasts: [],
@@ -19,6 +19,21 @@ export default function AppContextProvider({ children }) {
     updatedToasts.splice(id, 1);
     setToasts(updatedToasts);
   };
+
+  const handleAutoRemoveToast = () => {
+    return setTimeout(() => {
+      handleRemoveToast(toasts.length - 1);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    if (toasts?.length) {
+      const timer = handleAutoRemoveToast();
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [toasts]);
 
   return (
     <AppContext.Provider value={{ toasts, handleAddToast, handleRemoveToast }}>

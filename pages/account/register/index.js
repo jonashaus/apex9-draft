@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import CredentialForm from "../../../components/elements/CredentialForm";
 import CredentialsWrapper from "../../../components/elements/CredentialsWrapper";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -11,37 +10,35 @@ const Register = () => {
   const user = useUser();
   const router = useRouter();
 
-  useEffect(() => {
-    if (user) {
-      toast.info("You're already logged in, no need to register again!");
-      router.push("/");
-    }
-  }, []);
+  if (user) {
+    toast.info("You're already logged in, no need to register again!");
+    router.push("/");
+  } else {
+    const submitHandler = async (email, password) => {
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
+      if (error) {
+        toast.error(error.message);
+      } else {
+        console.log(data);
+        toast.success("Check your email for the confirmation link.");
+      }
+    };
 
-  const submitHandler = async (email, password) => {
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
-    if (error) {
-      toast.error(error.message);
-    } else {
-      console.log(data);
-      toast.success("Check your email for the confirmation link.");
-    }
-  };
-
-  return (
-    <CredentialsWrapper title="Register" image={registerSVG}>
-      <CredentialForm
-        submitButtonText="Register"
-        submitHandler={submitHandler}
-        leftButtonText="Login"
-        leftButtonRoute="/account/login"
-        scorePassword
-      ></CredentialForm>
-    </CredentialsWrapper>
-  );
+    return (
+      <CredentialsWrapper title="Register" image={registerSVG}>
+        <CredentialForm
+          submitButtonText="Register"
+          submitHandler={submitHandler}
+          leftButtonText="Login"
+          leftButtonRoute="/account/login"
+          scorePassword
+        ></CredentialForm>
+      </CredentialsWrapper>
+    );
+  }
 };
 
 export default Register;

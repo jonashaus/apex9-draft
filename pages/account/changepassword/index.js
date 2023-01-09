@@ -1,23 +1,18 @@
-import { useContext, useEffect } from "react";
-import { AppContext } from "../../../context/AppContextProvider";
 import CredentialForm from "../../../components/elements/CredentialForm";
 import CredentialsWrapper from "../../../components/elements/CredentialsWrapper";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import changepasswordSVG from "../../../public/images/change_password.svg";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const ChangePassword = () => {
-  const { handleAddToast } = useContext(AppContext);
   const supabase = useSupabaseClient();
 
   const router = useRouter();
   const user = useUser();
   useEffect(() => {
     if (!user) {
-      handleAddToast(
-        "warning",
-        "You have to log in before you can change your password!"
-      );
+      toast.warn("You have to log in before you can change your password!");
       router.push("/account/login");
     }
   }, []);
@@ -27,9 +22,9 @@ const ChangePassword = () => {
       password: password,
     });
     if (error) {
-      handleAddToast("danger", error.message);
+      toast.error(error.message);
     } else {
-      handleAddToast("success", "Your password was changed successfully");
+      toast.success("Your password was changed successfully");
       router.push("/");
     }
   };

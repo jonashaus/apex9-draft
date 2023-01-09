@@ -1,12 +1,8 @@
-import { useContext } from "react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
-import { AppContext } from "../../context/AppContextProvider";
 
 const Home = () => {
   const session = useSession();
   const supabase = useSupabaseClient();
-
-  const { handleAddToast } = useContext(AppContext);
 
   return (
     <div className="container">

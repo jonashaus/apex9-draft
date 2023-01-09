@@ -1,3 +1,12 @@
+:root {
+  --toastify-color-light: #f8f9fa !important;
+  --toastify-color-dark: #212529 !important;
+  --toastify-color-info: #0d6efd !important;
+  --toastify-color-success: #198754 !important;
+  --toastify-color-warning: #ffc107 !important;
+  --toastify-color-error: #dc3545 !important;
+}
+
 .form-control.c-danger {
   border-color: #dc3545;
 }
@@ -24,3 +33,8 @@
   border-color: #198754;
   box-shadow: 0 0 0 0.25rem rgb(25 135 84 / 25%);
 }
+
+/* .Toastify__toast-theme--colored.Toastify__toast--error {
+  color: var(--toastify-text-color-error);
+  background: #dc3545 !important;
+} */

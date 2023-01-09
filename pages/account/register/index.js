@@ -1,23 +1,18 @@
-import { useContext, useEffect } from "react";
-import { AppContext } from "../../../context/AppContextProvider";
 import CredentialForm from "../../../components/elements/CredentialForm";
 import CredentialsWrapper from "../../../components/elements/CredentialsWrapper";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import registerSVG from "../../../public/images/register.svg";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const Register = () => {
-  const { handleAddToast } = useContext(AppContext);
   const supabase = useSupabaseClient();
 
   const router = useRouter();
   const user = useUser();
   useEffect(() => {
     if (user) {
-      handleAddToast(
-        "success",
-        "You're already logged in, no need to register again!"
-      );
+      toast.info("You're already logged in, no need to register again!");
       router.push("/");
     }
   }, []);
@@ -28,10 +23,10 @@ const Register = () => {
       password: password,
     });
     if (error) {
-      handleAddToast("danger", error.message);
+      toast.error(error.message);
     } else {
       console.log(data);
-      handleAddToast("success", "Check your email for the confirmation link.");
+      toast.success("Check your email for the confirmation link.");
     }
   };
 

@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }) {
       initialSession={pageProps.initialSession}
     >
       <AppContextProvider>
-        <NavBar />
+        {/* <NavBar /> */}
         <Component {...pageProps} />
         <GenerateToasts />
       </AppContextProvider>

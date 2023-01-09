@@ -14,10 +14,13 @@ const Login = () => {
   const user = useUser();
   useEffect(() => {
     if (user) {
-      handleAddToast("success", "You're already logged in!");
+      handleAddToast(
+        "success",
+        "You're already logged in!" + JSON.stringify(user)
+      );
       router.push("/");
     }
-  }, []);
+  }, [user]);
 
   const submitHandler = async (email, password) => {
     const { data, error } = await supabase.auth.signInWithPassword({

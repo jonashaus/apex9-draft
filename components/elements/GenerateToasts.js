@@ -30,10 +30,7 @@ const Toast = ({ colorScheme, text, onDismiss, id }) => {
       aria-atomic="true"
     >
       <div className="d-flex">
-        <div className="toast-body">
-          {text}
-          <p>{id}</p>
-        </div>
+        <div className="toast-body">{text}</div>
         <button
           type="button"
           className="btn-close btn-close-white me-2 m-auto"

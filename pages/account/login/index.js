@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import CredentialForm from "../../../components/elements/CredentialForm";
 import CredentialsWrapper from "../../../components/elements/CredentialsWrapper";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -7,15 +8,18 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const supabase = useSupabaseClient();
-
-  const router = useRouter();
   const user = useUser();
+  const router = useRouter();
+
+  console.log("test" + JSON.stringify(user));
+
   useEffect(() => {
+    console.log("effect" + JSON.stringify(user));
     if (user) {
-      toast.info("You're already logged in!" + JSON.stringify(user));
+      toast.info("You're already logged in!");
       router.push("/");
     }
-  }, [user]);
+  }, []);
 
   const submitHandler = async (email, password) => {
     const { data, error } = await supabase.auth.signInWithPassword({

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import CredentialForm from "../../../components/elements/CredentialForm";
 import CredentialsWrapper from "../../../components/elements/CredentialsWrapper";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -7,9 +8,9 @@ import { toast } from "react-toastify";
 
 const Register = () => {
   const supabase = useSupabaseClient();
-
-  const router = useRouter();
   const user = useUser();
+  const router = useRouter();
+
   useEffect(() => {
     if (user) {
       toast.info("You're already logged in, no need to register again!");

@@ -12,7 +12,7 @@ const ChangePassword = () => {
 
   if (!user) {
     toast.warn("You have to log in before you can change your password!");
-    router.push("/account/login");
+    /*     router.push("/"); */
   } else {
     const submitHandler = async (email, password) => {
       const { data, error } = await supabase.auth.updateUser({

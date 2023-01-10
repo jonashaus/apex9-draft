@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-const ChangePassword = () => {
+const SAPTEST = () => {
   return (
     <div className="container">
       <div>
@@ -69,4 +69,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default SAPTEST;

@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import RestrictedAccessWrapper from "../../components/elements/RestrictedAccessWrapper";
+
 const SAPTEST = () => {
   return (
-    <div className="container">
-      <div>
+    <RestrictedAccessWrapper accessCode="test">
+      <>
         <div className="mb-5">
           <h1>SAP System Scan Mockup</h1>
           <i>by Jonas Hauswurz</i>
@@ -64,8 +67,8 @@ const SAPTEST = () => {
             }}
           ></div>
         </div>
-      </div>
-    </div>
+      </>
+    </RestrictedAccessWrapper>
   );
 };
 

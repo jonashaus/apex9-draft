@@ -28,7 +28,7 @@ const RestrictedAccessWrapper = (props) => {
               <input
                 id="accessCode"
                 className="form-control mb-3 text-center"
-                type="password"
+                type="text"
                 onChange={(e) => setAccessCode(e.target.value)}
               />
               <button

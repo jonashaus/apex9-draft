@@ -5,11 +5,16 @@ import changepasswordSVG from "../../../public/images/change_password.svg";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import LoadingScreen from "../../../components/elements/LoadingScreen";
 
 const ChangePassword = () => {
   const supabase = useSupabaseClient();
   const user = useUser();
   const router = useRouter();
+
+  if (!user) {
+    return <LoadingScreen />;
+  }
 
   useEffect(() => {
     if (!user) {

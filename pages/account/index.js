@@ -1,43 +1,33 @@
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { useState, useEffect } from "react";
+import UnauthorizedScreen from "../../components/elements/UnauthorizedScreen";
 
-const MyAccount = () => {
+const Account = () => {
   const supabase = useSupabaseClient();
   const user = useUser();
   const router = useRouter();
-  const [myProfile, setMyProfile] = useState({});
-  console.log(user);
+  const [profile, setProfile] = useState({});
 
   useEffect(() => {
     if (user) {
-      const fetchProfile = async () => {
-        try {
-          const { data, error } = await supabase
-            .from("profiles")
-            .select()
-            .eq("id", user.id);
-          if (error) {
-            throw error;
-          }
-          if (data) {
-            await setMyProfile(data[0]);
-          }
-        } catch (error) {
-          toast.error(error.message);
-        } finally {
-        }
+      const fetchData = async () => {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select()
+          .eq("id", user.id);
+        setProfile(data[0]);
       };
-
-      fetchProfile;
-      toast.success("You are logged in");
-    } else {
-      toast.warning("You are not logged in!");
+      fetchData();
     }
-  }, []);
+  }, [user]);
 
-  return <div className="container">{user.id}</div>;
+  if (!user) {
+    return <UnauthorizedScreen />;
+  }
+
+  return <h1>{profile.full_name}</h1>;
 };
 
-export default MyAccount;
+export default Account;

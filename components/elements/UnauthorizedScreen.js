@@ -6,7 +6,7 @@ const UnauthorizedScreen = () => {
     >
       <div className="row">
         <div className="col mb-3 align-self-center text-center">
-          <p>I'm sorry, but you are not authorized to access this page</p>
+          <p>I'm sowwy, but you're not authorized</p>
           <h1>🥺👉👈</h1>
         </div>
       </div>

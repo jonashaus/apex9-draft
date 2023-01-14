@@ -55,7 +55,10 @@ const NavBar = () => {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <button className="btn py-0">
+                  <button
+                    className="btn py-0 border-0"
+                    onClick={() => router.push("/account")}
+                  >
                     <i className="bi bi-person-circle text-light fs-4"></i>
                   </button>
                 </li>

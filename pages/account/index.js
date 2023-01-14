@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import UnauthorizedScreen from "../../components/elements/UnauthorizedScreen";
+import Profile from "../../components/account/Profile";
 
 const Account = () => {
   const supabase = useSupabaseClient();
@@ -27,7 +28,11 @@ const Account = () => {
     return <UnauthorizedScreen />;
   }
 
-  return <h1>{profile.full_name}</h1>;
+  return (
+    <>
+      <Profile profile={profile} />
+    </>
+  );
 };
 
 export default Account;

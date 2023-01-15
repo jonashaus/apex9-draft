@@ -16,7 +16,7 @@ const Login = () => {
       toast.info("You're already logged in!");
       router.push("/");
     }
-  });
+  }, []);
 
   const submitHandler = async (email, password) => {
     const { data, error } = await supabase.auth.signInWithPassword({

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-const RestrictedAccessWrapper = (props) => {
+const AccessCodeWrapper = (props) => {
   const [accessCode, setAccessCode] = useState("");
   const [protectedContentVisible, setProtectedContentVisible] = useState(false);
 
@@ -48,4 +48,4 @@ const RestrictedAccessWrapper = (props) => {
   );
 };
 
-export default RestrictedAccessWrapper;
+export default AccessCodeWrapper;

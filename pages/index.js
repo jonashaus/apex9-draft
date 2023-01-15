@@ -8,10 +8,17 @@ const Home = () => {
   return (
     <div className="container">
       <h1>Home</h1>
-      <p>
-        <Link href={"/account"}>My Account</Link>
-      </p>
-      <Link href={"/testing"}>Testing</Link>
+      <ul>
+        <li>
+          <Link href={"/account"}>My Account</Link>
+        </li>
+        <li>
+          <Link href={"/testing"}>Testing</Link>
+        </li>
+        <li>
+          <Link href={"/admin"}>Admin</Link>
+        </li>
+      </ul>
     </div>
   );
 };

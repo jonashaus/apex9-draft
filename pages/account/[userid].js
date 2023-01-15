@@ -5,11 +5,13 @@ import { useState, useEffect } from "react";
 import UnauthorizedScreen from "../../components/elements/UnauthorizedScreen";
 import Profile from "../../components/account/Profile";
 
-const MyAccount = () => {
+const Account = () => {
   const supabase = useSupabaseClient();
   const user = useUser();
   const router = useRouter();
   const [profile, setProfile] = useState({});
+
+  const { userid } = router.query;
 
   useEffect(() => {
     if (user) {
@@ -17,18 +19,31 @@ const MyAccount = () => {
         const { data, error } = await supabase
           .from("profiles")
           .select()
-          .eq("id", user.id);
-        setProfile(data[0]);
+          .eq("id", userid);
+        if (error) {
+          setProfile(null);
+          toast.error("This user doesn't exist.");
+        } else {
+          setProfile(data[0]);
+        }
       };
       fetchData();
     }
-  }, [user]);
+  }, [userid]);
 
   if (!user) {
     return <UnauthorizedScreen />;
   }
 
-  return <Profile profile={profile} editable />;
+  if (!profile) {
+    return null;
+  }
+
+  return (
+    <>
+      <Profile profile={profile} />
+    </>
+  );
 };
 
-export default MyAccount;
+export default Account;

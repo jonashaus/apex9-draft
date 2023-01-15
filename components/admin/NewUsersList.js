@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import Tags from "../elements/Tags";
 
-const UsersList = () => {
+const NewUsersList = () => {
   const supabase = useSupabaseClient();
   const [users, setUsers] = useState([]);
   const [activeUser, setActiveUser] = useState(null);
@@ -24,9 +24,10 @@ const UsersList = () => {
         <h1>Users</h1>
         <div className="list-group list-group-flush">
           {users.map((user) => (
-            <div key={user.id}>
+            <>
               <User
                 user={user}
+                key={user.id}
                 activeUser={activeUser}
                 setActiveUser={setActiveUser}
               />
@@ -34,7 +35,7 @@ const UsersList = () => {
                 <Profile user={user} />
                 <Roles user={user} />
               </UserModal>
-            </div>
+            </>
           ))}
         </div>
       </div>
@@ -204,4 +205,4 @@ const Roles = ({ user }) => {
   );
 };
 
-export default UsersList;
+export default NewUsersList;

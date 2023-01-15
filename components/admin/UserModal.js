@@ -4,60 +4,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import Tags from "../elements/Tags";
 
-const UsersList = () => {
-  const supabase = useSupabaseClient();
-  const [users, setUsers] = useState([]);
-  const [activeUser, setActiveUser] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await supabase.from("profiles").select();
-      setUsers(data);
-    };
-
-    fetchData();
-  }, []);
-
-  return (
-    <div className="col col-12 col-md-6">
-      <div className="c-hover rounded-5 p-3 mt-3">
-        <h1>Users</h1>
-        <div className="list-group list-group-flush">
-          {users.map((user) => (
-            <div key={user.id}>
-              <User
-                user={user}
-                activeUser={activeUser}
-                setActiveUser={setActiveUser}
-              />
-              <UserModal user={user}>
-                <Profile user={user} />
-                <Roles user={user} />
-              </UserModal>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const User = ({ user }) => {
-  return (
-    <div className="list-group-item list-group-item-action bg-transparent">
-      <button
-        type="button"
-        className="btn text-start px-0"
-        data-bs-toggle="modal"
-        data-bs-target={`#modal_${user.id}`}
-      >
-        {user.email}
-      </button>
-    </div>
-  );
-};
-
-const UserModal = ({ user, children }) => {
+const UserModal = ({ user }) => {
   const router = useRouter();
   return (
     <div className="modal fade" id={`modal_${user.id}`} tabIndex="-1">
@@ -79,7 +26,10 @@ const UserModal = ({ user, children }) => {
                 </button>
               </div>
             </div>
-            <div className="modal-body">{children}</div>
+            <div className="modal-body">
+              <Profile user={user} />
+              <Roles user={user} />
+            </div>
             <div className="modal-footer">
               <button
                 type="button"
@@ -203,5 +153,4 @@ const Roles = ({ user }) => {
     </div>
   );
 };
-
-export default UsersList;
+export default UserModal;

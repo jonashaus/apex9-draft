@@ -9,13 +9,11 @@ const Tags = ({ tags, tagDescription, addTagHandler, removeTagHandler }) => {
       addTagHandler(tagText);
     }
   };
-
   const removeTag = (tagText) => {
     removeTagHandler(tagText);
   };
-
   return (
-    <div className="d-flex flex-wrap p-2 border rounded-5">
+    <div className="d-flex flex-wrap px-2 py-1 border rounded-4">
       {tags &&
         tags.map((tag, i) => {
           return (
@@ -46,9 +44,8 @@ const Tag = ({ text, removeTagHandler }) => {
   const removeTag = () => {
     removeTagHandler(text);
   };
-
   return (
-    <span className="badge rounded-pill text-bg-secondary me-1 d-flex align-items-center mb-1 mb-md-0">
+    <span className="badge rounded-pill text-bg-secondary me-1 d-flex align-items-center my-1">
       {text}
       {removeTagHandler && <i className="bi bi-x ms-1" onClick={removeTag} />}
     </span>
@@ -64,7 +61,6 @@ const TagCreator = ({ addTagHandler, tagDescription }) => {
   };
 
   useEffect(() => {
-    console.log(newTag.length + "ch");
     resizeInput();
   }, [newTag]);
 

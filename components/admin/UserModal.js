@@ -12,7 +12,9 @@ const UserModal = ({ user }) => {
         <div className="modal-content">
           <div className="modal-content">
             <div className="modal-header">
-              <h3 className="modal-title">{user.full_name}</h3>
+              <h3 className="modal-title text-nowrap overflow-hidden">
+                {user.full_name}
+              </h3>
               <div className="col d-flex justify-content-end">
                 <button
                   className="btn btn-warning text-white me-3"

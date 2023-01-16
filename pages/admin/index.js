@@ -1,13 +1,28 @@
 import { useState, useEffect } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import UsersOnlyWrapper from "../../components/elements/UsersOnlyWrapper";
-import SpecialListCard from "../../components/admin/SpecialListCard";
+import SpecialListCard from "../../components/elements/SpecialListCard";
 import UserModal from "../../components/admin/UserModal";
-import Image from "next/image";
-import code1 from "../../public/images/code1.png";
-import code2 from "../../public/images/code2.png";
 
 const AdminPanel = () => {
+  return (
+    <UsersOnlyWrapper>
+      <div className="container">
+        <h1>Admin Dashboard</h1>
+        <div className="row">
+          <div className="col">
+            <UserCard />
+          </div>
+          <div className="col">
+            <RolesCard />
+          </div>
+        </div>
+      </div>
+    </UsersOnlyWrapper>
+  );
+};
+
+const UserCard = () => {
   const [users, setUsers] = useState([]);
   const supabase = useSupabaseClient();
 
@@ -20,68 +35,113 @@ const AdminPanel = () => {
   }, []);
 
   return (
-    <div className="container">
-      <h1>Steven - das isch was ich meine :D</h1>
-      <div className="row">
-        <div className="col">
-          <SpecialListCard
-            itemTitles={users.map(({ email }) => email)}
-            itemIDs={users.map(({ id }) => id)}
-            items={users}
-            title="Users"
+    <SpecialListCard
+      itemTitles={users.map(({ email }) => email)}
+      itemIDs={users.map(({ id }) => id)}
+      items={users}
+      filterMode="filterData"
+      title="Users"
+    >
+      {({ title, id, data }) => (
+        <>
+          <button
+            type="button"
+            className="list-group-item list-group-item-action border-0 border-bottom"
+            data-bs-toggle="modal"
+            data-bs-target={`#modal_${data.id}`}
           >
-            {(title, id, user) => (
-              <>
-                <button
-                  type="button"
-                  className="list-group-item list-group-item-action"
-                  data-bs-toggle="modal"
-                  data-bs-target={`#modal_${id}`}
-                >
-                  {title}
-                </button>
-                <UserModal user={user} />
-              </>
-            )}
-          </SpecialListCard>
-          <Image src={code1} alt="" width={600} />
-        </div>
-        <div className="col">
-          <SpecialListCard
-            itemTitles={users.map(({ email }) => email)}
-            itemIDs={users.map(({ id }) => id)}
-            items={users}
-            title="Users 2"
-          >
-            {(title, id, user) => (
-              <>
-                <button
-                  type="button"
-                  className="list-group-item list-group-item-action"
-                  data-bs-toggle="collapse"
-                  data-bs-target={`#collapse_${id}`}
-                >
-                  {title}{" "}
-                  <span className="badge bg-primary rounded-pill">{id}</span>
-                  <span className="badge bg-danger rounded-pill">
-                    {user.email.length}
-                  </span>
-                </button>
-                <div className="collapse" id={`collapse_${id}`}>
-                  <div className="card card-body">
-                    <span className="badge bg-warning rounded-pill">{id}</span>
-                    Some placeholder content for the collapse component. This
-                    panel is hidden by default but revealed when the user
-                    activates the relevant trigger.
-                  </div>
-                </div>
-              </>
-            )}
-          </SpecialListCard>
-          <Image src={code2} alt="" width={600} />
-        </div>
-      </div>
-    </div>
+            {title + " "}
+            <span className="badge bg-secondary rounded-pill d-none d-md-inline">
+              {id}
+            </span>{" "}
+          </button>
+          <UserModal user={data} />
+        </>
+      )}
+    </SpecialListCard>
+  );
+};
+
+const RolesCard = () => {
+  const [roles, setRoles] = useState([]);
+  const [rolesWithAdditionalInfo, setRolesWithAdditionalInfo] = useState([]);
+  const supabase = useSupabaseClient();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const getRoles = async () => {
+        const { data } = await supabase.from("roles").select();
+        setRoles(data);
+      };
+      getRoles();
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const getUserRoles = async () => {
+        const { data } = await supabase.from("user_roles").select();
+        setRolesWithAdditionalInfo(
+          roles.map((role) => {
+            return {
+              name: role.name,
+              dangerous: role.dangerous,
+              assignedUsersCount: data.filter((userRole) => {
+                return userRole.role == role.name;
+              }).length,
+            };
+          })
+        );
+      };
+      getUserRoles();
+    };
+    fetchData();
+  }, [roles]);
+
+  /* Enable Bootstrap Tooltips */
+  const tooltipTriggerList = document.querySelectorAll(
+    '[data-bs-toggle="tooltip"]'
+  );
+  const tooltipList = [...tooltipTriggerList].map(
+    (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+  );
+
+  const extraComponent = (
+    <i class="bi bi-plus-square-fill text-success fs-2 ms-3 lh-1" />
+  );
+
+  return (
+    <SpecialListCard
+      itemTitles={rolesWithAdditionalInfo.map(({ name }) => name)}
+      itemIDs={rolesWithAdditionalInfo.map(({ name }) => name)}
+      items={rolesWithAdditionalInfo}
+      title="Roles"
+      filterMode="filterData"
+      extraComponent={extraComponent}
+    >
+      {({ title, id, data }) => (
+        <>
+          <div className="list-group-item list-group-item-action border-0 border-bottom d-flex justify-content-between">
+            <div>
+              {title + " "}
+              {data.dangerous && (
+                <span className="badge bg-danger rounded-pill">dangerous</span>
+              )}
+            </div>
+            <div className="d-flex justify-content-end align-items-center">
+              <span
+                className="badge bg-secondary"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                data-bs-custom-class="custom-tooltip"
+                data-bs-title={`The count of users this role is assigned to.`}
+              >{`${data.assignedUsersCount}`}</span>
+            </div>
+          </div>
+        </>
+      )}
+    </SpecialListCard>
   );
 };
 

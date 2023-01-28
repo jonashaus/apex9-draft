@@ -26,7 +26,6 @@ const Register = () => {
     if (error) {
       toast.error(error.message);
     } else {
-      console.log(data);
       toast.success("Check your email for the confirmation link.");
     }
   };

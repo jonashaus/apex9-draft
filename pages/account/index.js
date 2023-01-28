@@ -49,7 +49,7 @@ const MyAccount = () => {
       };
       autoAssignRoles();
     }
-  }, [router]);
+  }, [router, user]);
 
   if (!user) {
     return <UnauthorizedScreen />;

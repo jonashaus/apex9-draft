@@ -100,18 +100,18 @@ const Profile = ({ user }) => {
 
 const Roles = ({ user }) => {
   const supabase = useSupabaseClient();
+  const [userRoles, setUserRoles] = useState([]);
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
-    const fetchRoles = async () => {
+    const fetchUserRoles = async () => {
       const { data } = await supabase
         .from("user_roles")
         .select("role")
         .eq("user", user.id);
-      setRoles(data.map(({ role }) => role));
+      setUserRoles(data.map(({ role }) => role));
     };
-
-    fetchRoles();
+    fetchUserRoles();
   }, [user]);
 
   const addTagHandler = async (tag) => {
@@ -123,7 +123,7 @@ const Roles = ({ user }) => {
     if (error) {
       toast.error(error.details + " " + error.message);
     } else {
-      setRoles((prevState) => {
+      setUserRoles((prevState) => {
         toast.success("Added role!");
         return [...prevState, tag];
       });
@@ -140,14 +140,14 @@ const Roles = ({ user }) => {
       toast.error(error.details + " " + error.message);
     } else {
       toast.success("Removed role!");
-      setRoles(roles.filter((e) => e !== tag));
+      setUserRoles(userRoles.filter((e) => e !== tag));
     }
   };
   return (
     <div>
       <h5 className="ms-1">Roles</h5>
       <Tags
-        tags={roles}
+        tags={userRoles}
         addTagHandler={addTagHandler}
         removeTagHandler={removeTagHandler}
         tagDescription="role"

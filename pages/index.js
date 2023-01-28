@@ -13,6 +13,9 @@ const Home = () => {
           <Link href={"/account"}>My Account</Link>
         </li>
         <li>
+          <Link href={"/account?vr=signupconfirm"}>Account</Link>
+        </li>
+        <li>
           <Link href={"/testing"}>Testing</Link>
         </li>
         <li>

@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const Tags = ({ tags, tagDescription, addTagHandler, removeTagHandler }) => {
+const Tags = ({
+  tags,
+  tagDescription,
+  addTagHandler,
+  removeTagHandler,
+  selectOptions,
+}) => {
   const addTag = (tagText) => {
     if (tags.lastIndexOf(tagText) !== -1) {
       toast.error("This tag already exists!");
@@ -34,7 +40,11 @@ const Tags = ({ tags, tagDescription, addTagHandler, removeTagHandler }) => {
         />
       )}
       {addTagHandler && (
-        <TagCreator tagDescription={tagDescription} addTagHandler={addTag} />
+        <TagCreator
+          tagDescription={tagDescription}
+          addTagHandler={addTag}
+          selectOptions={selectOptions}
+        />
       )}
     </div>
   );
@@ -52,7 +62,7 @@ const Tag = ({ text, removeTagHandler }) => {
   );
 };
 
-const TagCreator = ({ addTagHandler, tagDescription }) => {
+const TagCreator = ({ addTagHandler, tagDescription, selectOptions }) => {
   const [newTag, setNewTag] = useState("");
 
   const enterPressHandler = (event) => {
@@ -62,16 +72,31 @@ const TagCreator = ({ addTagHandler, tagDescription }) => {
     }
   };
   return (
-    <input
-      id="tagCreator"
-      type="text"
-      placeholder={`Add ${tagDescription || "tag"}...`}
-      className="border-0 p-0 ps-1 bg-transparent text-secondary flex-fill"
-      style={{ fontSize: "0.75em", fontWeight: "700", outline: "none" }}
-      onChange={(e) => setNewTag(e.target.value)}
-      value={newTag}
-      onKeyDown={enterPressHandler}
-    />
+    <>
+      {selectOptions ? (
+        <select class="form-select" aria-label="Default select example">
+          <option selected>{`Add ${tagDescription || "tag"}...`}</option>
+          {selectOptions.map((option, i) => {
+            return (
+              <option value={option} key={i}>
+                {option}
+              </option>
+            );
+          })}
+        </select>
+      ) : (
+        <input
+          id="tagCreator"
+          type="text"
+          placeholder={`Add ${tagDescription || "tag"}...`}
+          className="border-0 p-0 ps-1 bg-transparent text-secondary flex-fill"
+          style={{ fontSize: "0.75em", fontWeight: "700", outline: "none" }}
+          onChange={(e) => setNewTag(e.target.value)}
+          value={newTag}
+          onKeyDown={enterPressHandler}
+        />
+      )}
+    </>
   );
 };
 

@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import UsersOnlyWrapper from "../../components/elements/UsersOnlyWrapper";
+import RoleWrapper from "../../components/elements/RoleWrapper";
 import SpecialListCard from "../../components/elements/SpecialListCard";
 import UserModal from "../../components/admin/UserModal";
+import { toast } from "react-toastify";
 
 const AdminPanel = () => {
   return (
-    <UsersOnlyWrapper>
+    <RoleWrapper requiredRoles={["admin"]}>
       <div className="container">
         <h1>Admin Dashboard</h1>
         <div className="row">
@@ -18,7 +19,7 @@ const AdminPanel = () => {
           </div>
         </div>
       </div>
-    </UsersOnlyWrapper>
+    </RoleWrapper>
   );
 };
 
@@ -27,11 +28,11 @@ const UserCard = () => {
   const supabase = useSupabaseClient();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProfiles = async () => {
       const { data } = await supabase.from("profiles").select();
       setUsers(data);
     };
-    fetchData();
+    fetchProfiles();
   }, []);
 
   return (
@@ -44,17 +45,16 @@ const UserCard = () => {
     >
       {({ title, id, data }) => (
         <>
-          <button
-            type="button"
-            className="list-group-item list-group-item-action border-0 border-bottom"
+          <div
+            className="list-group-item list-group-item-action border-0 border-bottom d-flex justify-content-between"
             data-bs-toggle="modal"
             data-bs-target={`#modal_${data.id}`}
           >
-            {title + " "}
+            <div>{title}</div>
             <span className="badge bg-secondary rounded-pill d-none d-md-inline">
               {id}
-            </span>{" "}
-          </button>
+            </span>
+          </div>
           <UserModal user={data} />
         </>
       )}
@@ -68,14 +68,11 @@ const RolesCard = () => {
   const supabase = useSupabaseClient();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const getRoles = async () => {
-        const { data } = await supabase.from("roles").select();
-        setRoles(data);
-      };
-      getRoles();
+    const fetchRoles = async () => {
+      const { data } = await supabase.from("roles").select();
+      setRoles(data);
     };
-    fetchData();
+    fetchRoles();
   }, []);
 
   useEffect(() => {
@@ -99,18 +96,6 @@ const RolesCard = () => {
     fetchData();
   }, [roles]);
 
-  /* Enable Bootstrap Tooltips */
-  const tooltipTriggerList = document.querySelectorAll(
-    '[data-bs-toggle="tooltip"]'
-  );
-  const tooltipList = [...tooltipTriggerList].map(
-    (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-  );
-
-  const extraComponent = (
-    <i class="bi bi-plus-square-fill text-success fs-2 ms-3 lh-1" />
-  );
-
   return (
     <SpecialListCard
       itemTitles={rolesWithAdditionalInfo.map(({ name }) => name)}
@@ -118,7 +103,6 @@ const RolesCard = () => {
       items={rolesWithAdditionalInfo}
       title="Roles"
       filterMode="filterData"
-      extraComponent={extraComponent}
     >
       {({ title, id, data }) => (
         <>
@@ -130,13 +114,7 @@ const RolesCard = () => {
               )}
             </div>
             <div className="d-flex justify-content-end align-items-center">
-              <span
-                className="badge bg-secondary"
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                data-bs-custom-class="custom-tooltip"
-                data-bs-title={`The count of users this role is assigned to.`}
-              >{`${data.assignedUsersCount}`}</span>
+              <span className="badge rounded-pill bg-secondary">{`${data.assignedUsersCount} users`}</span>
             </div>
           </div>
         </>
